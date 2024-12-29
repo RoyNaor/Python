@@ -8,7 +8,7 @@ def split_message(message, max_size):
     result = []  # Array to store the split parts
     index = 0  # for the prefix M{index}-
 
-    start_index = 0 # follow the bytes of the message
+    start_index = 0  # follow the bytes of the message
 
     while start_index < len(message_bytes):
         prefix = f"M{index}-"
@@ -72,8 +72,7 @@ if file_mode == 'yes':
     file_path = input("Enter the file path: ").strip()
     message, maximum_msg_size, window_size, timeout = read_input_from_file(file_path)
 
-    max_ask_server = f"This is the maximum number of bytes you are willing to receive: {maximum_msg_size}"
-    clientSocket.send(max_ask_server.encode())
+    clientSocket.send(file_path.encode())
     server_response = clientSocket.recv(4096).decode()
 
     if server_response == "ok":
@@ -82,6 +81,7 @@ if file_mode == 'yes':
         print("The server does not agree to the max message size")
 
 else:
+    print("Waiting for server to enter a maximum message size...")
     max_ask_server = "what is the maximum number of bytes you are willing to receive?"
     clientSocket.send(max_ask_server.encode())
 

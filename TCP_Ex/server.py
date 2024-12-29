@@ -9,6 +9,16 @@ def extract(decoded_msg):
 
     return packet_number, message_content
 
+def read_input_from_file(file_path):
+    params = {}
+    with open(file_path, 'r', encoding='utf-8') as file:  # Open the file
+        for line in file:
+            key, value = line.split(":", 1)  # Split each line into key and value
+            params[key.strip()] = value.strip()  # Remove any extra whitespace
+
+    # Extract and return only the integer value
+    return int(params["maximum_msg_size"])
+
 
 SERVER_ADDRESS = ('', 13000)
 MAX_MSG_SIZE = 8
@@ -19,23 +29,25 @@ serverSocket.listen(1)
 
 print("The server is ready to receive client")
 connectionSocket, addrClient = serverSocket.accept()
+print("Connection established\n")
+
 
 sentence = connectionSocket.recv(4096).decode()
 if sentence == "what is the maximum number of bytes you are willing to receive?":
+    MAX_MSG_SIZE = int(input("Enter maximum message size: "))
+    print("maximum message size received, sending to client...\n")
     connectionSocket.send(bytes(str(MAX_MSG_SIZE).encode()))
 
-elif "This is the maximum number of bytes you are willing to receive:" in sentence:
-    MAX_MSG_SIZE = int(sentence.split(":")[-1].strip())
+else:
+    MAX_MSG_SIZE = read_input_from_file(sentence)  # read from file
     connectionSocket.send("ok".encode())
-
-print(f"MAX_MSG_SIZE: {MAX_MSG_SIZE}")  # debug
 
 packets_received = []
 next_expected_packet = 0  # Track the next expected packet
 
 # Modified while loop to handle packets
 while True:
-    msg_from_client = connectionSocket.recv(MAX_MSG_SIZE)
+    msg_from_client = connectionSocket.recv(int(MAX_MSG_SIZE))
 
     if not msg_from_client:  # Break when the client stops sending
         break

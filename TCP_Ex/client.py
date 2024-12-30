@@ -13,18 +13,10 @@ def split_message(message, max_size):
     # Loop to split the message into chunks of the appropriate size
     while start_index < len(message_bytes):
         prefix = f"M{index}-"  # Packet prefix to include packet number
-        prefix_size = len(prefix.encode('utf-8'))  # calculate the prefix size
-        chunk_size = max_size - prefix_size  # Remaining size for the message
-
-        # Check if the chunk size is valid
-        if chunk_size <= 0:
-            print("Not enough bytes to send the message")
-            result.append(None)  # Append None to indicate failure
-            return result
 
         # Extract the chunk of appropriate size
         remaining_bytes = message_bytes[start_index:]
-        chunk = remaining_bytes[:chunk_size]
+        chunk = remaining_bytes[:max_size]  # Directly use max_size as the chunk size
 
         # Decode to create a string and check if it splits characters
         while True:
@@ -115,12 +107,6 @@ while True:
     # Split the message into packets
     packets = split_message(message, maximum_msg_size)
     packetsACK = [False] * len(packets)  # List to track acknowledgments for each packet
-
-    # Handle the case where the message cannot be fully sent
-    if packets[len(packets) - 1] is None:
-        packets.remove(None)  # Remove the invalid packet
-        print("The message can't be sent in its entirety due to the maximum message length.")
-        print("Sending the parts of the message that can be delivered to the server...\n")
 
     # Initialize the sliding window protocol
     window_start = 0

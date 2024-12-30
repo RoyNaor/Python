@@ -1,6 +1,7 @@
 #import socket
 from socket import *
 
+
 # Function to extract the packet number and message content from a decoded message
 def extract(decoded_msg):
     new_msg = decoded_msg.split("-")  # Split the message into parts using '-'
@@ -9,6 +10,7 @@ def extract(decoded_msg):
     message_content = new_msg[1]  # Extract the actual message content
 
     return packet_number, message_content  # Return the packet number and content
+
 
 # Function to read the maximum message size from a file
 def read_input_from_file(file_path):
@@ -22,8 +24,11 @@ def read_input_from_file(file_path):
     return int(params["maximum_msg_size"])
 
 
+#---------------------------------------------------------------------------
+
 # Server setup
 SERVER_ADDRESS = ('', 13000)
+HEADER_SIZE = 10
 MAX_MSG_SIZE = 8  # Default maximum message size
 serverSocket = socket(AF_INET, SOCK_STREAM)  # Create a TCP socket
 
@@ -62,7 +67,7 @@ while True:
 
     # Loop to handle incoming packets from the client
     while True:
-        msg_from_client = connectionSocket.recv(int(MAX_MSG_SIZE))  # Receive a packet from the client
+        msg_from_client = connectionSocket.recv(int(MAX_MSG_SIZE) + HEADER_SIZE)  # Receive a packet from the client
 
         decoded_msg = msg_from_client.decode()  # Decode the received message
 

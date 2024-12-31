@@ -96,43 +96,59 @@ def handle_manual_mode(client_socket):
 
 
 # Function to Send a packet and process its acknowledgment
-def send_and_acknowledge(client_socket, packet, packets_ack):
-    client_socket.send(packet.encode())  # Send the packet
-    ack = client_socket.recv(4096).decode()  # Wait for acknowledgment
-    ack_number = int(ack[3:])  # Extract the acknowledgment number
-    print(f"Received {ack}")
-    packets_ack[ack_number] = True  # Mark the packet as acknowledged
+def get_acknowledge(client_socket):
+    # Immediately receive the acknowledgment
+    ack_from_server = client_socket.recv(4096).decode()  # Receive acknowledgment
+    ack_number = int(ack_from_server[3:])  # Extract ACK number
+    print(f"Received {ack_from_server}")  # Display the acknowledgment
 
-    return packets_ack
+    return ack_number
 
 
 # Function to Handle packet delivery using a sliding window protocol
 def send_packets(client_socket, packets, window_size, timeout):
-    packets_ack = [False] * len(packets)  # Track acknowledgment status for each packet
-    window_start = 0  # The starting index of the current window
-    start_time = time.time()  # Record the start time for timeout handling
 
+    packetsACK = [False] * len(packets)  # List to track acknowledgments for each packet
+    window_start = 0  # Initialize the sliding window protocol
+    start_time = time.time()  # Record the start time for timeout
+    window_moved = True  # Flag to indicate if the window has moved
+
+    # Sliding window protocol to send packets and handle acknowledgments
     while window_start < len(packets):
-        # Send packets within the current window
-        for i in range(window_start, min(window_start + window_size, len(packets))):
-            if not packets_ack[i]:  # Only send packets that haven't been acknowledged
-                print(f"Sending packet {i}: {packets[i]}")
-                # Send the packet at the given index and wait for acknowledgment, updating the acknowledgment status.
-                packets_ack = send_and_acknowledge(client_socket, packets[i], packets_ack)
 
-        # Slide the window forward for acknowledged packets
-        while window_start < len(packets) and packets_ack[window_start]:
-            window_start += 1
-            print(f"Moving window to {window_start}")
-            start_time = time.time()  # Reset the start time for timeout tracking
+        if window_moved:  # Send packets within the window if the window has moved
+            for i in range(window_start, min(window_start + int(window_size), len(packets))):
+                if i == 1:
+                    continue
+                if not packetsACK[i]:  # Only send unacknowledged packets
+                    print(f"Sending packet {i}: {packets[i]}")
+                    client_socket.send(packets[i].encode())  # Send the packet
 
-        # Resend unacknowledged packets if timeout occurs
-        if time.time() - start_time >= timeout:  # Check if timeout has been reached
-            for i in range(window_start, min(window_start + window_size, len(packets))):
-                if not packets_ack[i]:  # Resend only unacknowledged packets
-                    print(f"Resending packet {i}: {packets[i]}")
-                    # Send the packet at the given index and wait for acknowledgment, updating the acknowledgment status.
-                    packets_ack = send_and_acknowledge(client_socket, packets[i], packets_ack)
+                    # Immediately receive the acknowledgment
+                    ack_number = get_acknowledge(client_socket)
+                    packetsACK[ack_number] = True  # Mark the packet as acknowledged
+
+        window_moved = False  # Reset the window moved flag
+        # Slide the window forward
+        while window_start < len(packets) and packetsACK[window_start]:
+            window_start += 1  # Slide window forward
+            print(f"moving window to {window_start}")
+            start_time = time.time()  # Update the start time
+            window_moved = True
+
+        current_time = time.time() - start_time  # Update the elapsed time
+
+        # reached timeout and needs to send all the false packets
+        if current_time >= float(timeout):
+            for i in range(window_start, min(window_start + int(window_size), len(packets))):
+                if not packetsACK[i]:  # Resend unacknowledged packets
+                    print(f"Sending packet {i} again: {packets[i]}")
+                    client_socket.send(packets[i].encode())  # Send the packet
+
+                    # Immediately receive the acknowledgment
+                    ack_number = get_acknowledge(client_socket)
+                    for j in range(ack_number + 1):
+                        packetsACK[j] = True  # Mark the packet as acknowledged
 
             start_time = time.time()  # Reset the start time after resending packets
 
@@ -180,3 +196,4 @@ if __name__ == "__main__":
 
     # Start the client
     client(SERVER_ADDRESS)
+

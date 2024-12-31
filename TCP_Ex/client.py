@@ -56,105 +56,104 @@ def read_input_from_file(file_path):
     )
 
 
-#----------------------------------------------------------------------------------
+# Function to 
+def handle_file_mode(client_socket):
+    file_path = input(r"Enter the file path (for example C:\Users\userName\test.txt): ").strip()
+    message, max_msg_size, window_size, timeout = read_input_from_file(file_path)
 
-# Set the server address and port
-serverName = 'localhost'
-serverPort = 13000
-SERVER_ADDRESS = (serverName, serverPort)  # Combine into a tuple for connection
+    client_socket.send(file_path.encode())
+    server_response = client_socket.recv(4096).decode()
 
-# Create a TCP socket
-clientSocket = socket(AF_INET, SOCK_STREAM)
-clientSocket.connect(SERVER_ADDRESS)  # Connect to the server
-
-# Main loop to keep asking the user if they want to send a message
-while True:
-    send_message = input("\nDo you want to send a message to the server? (yes/no): ")
-    clientSocket.send(send_message.encode())  # Send the client's response to the server
-
-    if send_message != 'yes':  # If the client says "no", exit the loop
-        print("Ending connection with the server.")
-        break
-
-    # Input handling
-    file_mode = input("Do you want to read inputs from a file? (yes/no): ").strip().lower()
-    if file_mode == 'yes':
-        file_path = input(r"Enter the file path (for example - C:\Users\ofekb\Downloads\test.txt) : ").strip()
-        message, maximum_msg_size, window_size, timeout = read_input_from_file(file_path)
-
-        clientSocket.send(file_path.encode())  # Send the file path to the server
-        server_response = clientSocket.recv(4096).decode()  # Receive server response
-
-        if server_response == "ok":
-            print(f"The server agreed to the the file max: {maximum_msg_size}")
-        else:
-            print("The server does not agree to the max message size")
-
+    if server_response == "ok":
+        print(f"The server agreed to the max: {max_msg_size}")
     else:
-        print("Waiting for server to enter a maximum message size...")
-        max_ask_server = "what is the maximum number of bytes you are willing to receive?"
-        clientSocket.send(max_ask_server.encode())  # Send the request to the server
+        print("The server does not agree to the max message size")
 
-        maximum_msg_size = int(clientSocket.recv(4096).decode())  # Receive the maximum size from the server
-        print('Hi client, I\'m willing to receive:', str(maximum_msg_size) + " bytes")  # Display the server's response
+    return message, max_msg_size, window_size, timeout
 
-        # Get user input for the message and parameters
-        message = input('Input a massage: ')
-        window_size = input('enter the window size: ')
-        timeout = input('enter the timeout: ')
-        print("")
 
-    # Split the message into packets
-    packets = split_message(message, maximum_msg_size)
-    packetsACK = [False] * len(packets)  # List to track acknowledgments for each packet
+# Function to
+def handle_manual_mode(client_socket):
+    print("Waiting for server to enter a maximum message size...")
+    max_ask_server = "what is the maximum number of bytes you are willing to receive?"
+    client_socket.send(max_ask_server.encode())
 
-    # Initialize the sliding window protocol
+    max_msg_size = int(client_socket.recv(4096).decode())
+    print(f"Server: willing to receive {max_msg_size} bytes")
+
+    message = input("Input a message: ")
+    window_size = int(input("Enter the window size: "))
+    timeout = float(input("Enter the timeout: "))
+    print("")
+
+    return message, max_msg_size, window_size, timeout
+
+
+# Function to
+def send_packets(client_socket, packets, window_size, timeout):
+    packets_ack = [False] * len(packets)
     window_start = 0
-    start_time = time.time()  # Record the start time for timeout
-    current_time = time.time() - start_time  # Calculate elapsed time
-    window_moved = True  # Flag to indicate if the window has moved
+    start_time = time.time()
 
-    # Sliding window protocol to send packets and handle acknowledgments
     while window_start < len(packets):
+        for i in range(window_start, min(window_start + window_size, len(packets))):
+            if not packets_ack[i]:
+                print(f"Sending packet {i}: {packets[i]}")
+                client_socket.send(packets[i].encode())
+                ack = client_socket.recv(4096).decode()
+                ack_number = int(ack[3:])
+                print(f"Received {ack}")
+                packets_ack[ack_number] = True
 
-        if window_moved:  # Send packets within the window if the window has moved
-            for i in range(window_start, min(window_start + int(window_size), len(packets))):
-                if not packetsACK[i]:  # Only send unacknowledged packets
-                    print(f"Sending packet {i}: {packets[i]}")
-                    clientSocket.send(packets[i].encode())  # Send the packet
+        while window_start < len(packets) and packets_ack[window_start]:
+            window_start += 1
+            print(f"Moving window to {window_start}")
+            start_time = time.time()
 
-                    # Immediately receive the acknowledgment
-                    ack_from_server = clientSocket.recv(4096).decode()  # Receive acknowledgment
-                    ack_number = int(ack_from_server[3:])  # Extract ACK number
-                    print(f"Received {ack_from_server}")  # Display the acknowledgment
-                    packetsACK[ack_number] = True  # Mark the packet as acknowledged
+        if time.time() - start_time >= timeout:
+            for i in range(window_start, min(window_start + window_size, len(packets))):
+                if not packets_ack[i]:
+                    print(f"Resending packet {i}: {packets[i]}")
+                    client_socket.send(packets[i].encode())
+                    ack = client_socket.recv(4096).decode()
+                    ack_number = int(ack[3:])
+                    print(f"Received {ack}")
+                    packets_ack[ack_number] = True
 
-        window_moved = False  # Reset the window moved flag
-        # Slide the window forward
-        while window_start < len(packets) and packetsACK[window_start]:
-            window_start += 1  # Slide window forward
-            print(f"moving window to {window_start}")
-            start_time = time.time()  # Update the start time
-            window_moved = True
+            start_time = time.time()
 
-        current_time = time.time() - start_time  # Update the elapsed time
 
-        # reached timeout and needs to send all the false packets
-        if current_time >= float(timeout):
-            for i in range(window_start, min(window_start + int(window_size), len(packets))):
-                if not packetsACK[i]:  # Resend unacknowledged packets
-                    print(f"Sending packet {i} again: {packets[i]}")
-                    clientSocket.send(packets[i].encode())  # Send the packet
+# Function to handle the client-side operations for communication with the server
+def client(server_address):
+    client_socket = socket(AF_INET, SOCK_STREAM)
+    client_socket.connect(server_address)
 
-                    # Immediately receive the acknowledgment
-                    ack_from_server = clientSocket.recv(4096).decode()  # Receive acknowledgment
-                    ack_number = int(ack_from_server[3:])  # Extract ACK number
-                    print(f"Received {ack_from_server}")  # Display the acknowledgment
-                    for j in range(ack_number + 1):
-                        packetsACK[j] = True  # Mark the packet as acknowledged
+    while True:
+        send_message = input("\nDo you want to send a message to the server? (yes/no): ").strip().lower()
+        client_socket.send(send_message.encode())
 
-            start_time = time.time()  # Reset the start time after resending packets
+        if send_message != 'yes':
+            print("Ending connection with the server.")
+            break
 
-    clientSocket.send("done".encode())  # Indicate the end of the current message
+        file_mode = input("Do you want to read inputs from a file? (yes/no): ").strip().lower()
 
-clientSocket.close()  # Close the socket connection
+        if file_mode == 'yes':
+            message, max_msg_size, window_size, timeout = handle_file_mode(client_socket)
+        else:
+            message, max_msg_size, window_size, timeout = handle_manual_mode(client_socket)
+
+        packets = split_message(message, max_msg_size)
+        send_packets(client_socket, packets, window_size, timeout)
+
+        client_socket.send("done".encode())
+
+    client_socket.close()
+
+
+if __name__ == "__main__":
+    # Define the server address and port
+    SERVER_ADDRESS = ('localhost', 13000)
+
+    # Start the client
+    client(SERVER_ADDRESS)

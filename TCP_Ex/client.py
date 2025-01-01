@@ -1,5 +1,5 @@
 # import socket
-from socket import *
+import socket
 import time
 
 # Function to split a message into packets of a specific size
@@ -97,12 +97,25 @@ def handle_manual_mode(client_socket):
 
 # Function to Send a packet and process its acknowledgment
 def get_acknowledge(client_socket):
-    # Immediately receive the acknowledgment
-    ack_from_server = client_socket.recv(4096).decode()  # Receive acknowledgment
-    ack_number = int(ack_from_server[3:])  # Extract ACK number
-    print(f"Received {ack_from_server}")  # Display the acknowledgment
+    try:
+        client_socket.settimeout(1)  # Set the socket timeout to 1 second
+        ack_from_server = client_socket.recv(4096).decode()  # Receive acknowledgment
+        ack_number = int(ack_from_server[3:])  # Extract ACK number
+        print(f"Received {ack_from_server}")  # Display the acknowledgment
+        return ack_number
 
-    return ack_number
+    except socket.timeout:
+        # Handle cases where no acknowledgment is received within the timeout.
+        print("No acknowledgment received. Continuing...")
+        return None  # Return None if no acknowledgment is received
+
+    except (ValueError, IndexError):
+        # Handle invalid or incomplete acknowledgment messages.
+        print("incomplete acknowledgment received. Ignoring...")
+        return None
+
+    finally:
+        client_socket.settimeout(None)  # Reset the timeout to blocking mode
 
 
 # Function to Handle packet delivery using a sliding window protocol
@@ -118,15 +131,15 @@ def send_packets(client_socket, packets, window_size, timeout):
 
         if window_moved:  # Send packets within the window if the window has moved
             for i in range(window_start, min(window_start + int(window_size), len(packets))):
-                if i == 1:
-                    continue
-                if not packetsACK[i]:  # Only send unacknowledged packets
+                # Only send unacknowledged packets
+                if not packetsACK[i]:
                     print(f"Sending packet {i}: {packets[i]}")
                     client_socket.send(packets[i].encode())  # Send the packet
 
                     # Immediately receive the acknowledgment
                     ack_number = get_acknowledge(client_socket)
-                    packetsACK[ack_number] = True  # Mark the packet as acknowledged
+                    if ack_number is not None and ack_number < len(packetsACK):
+                        packetsACK[ack_number] = True  # Mark the packet as acknowledged
 
         window_moved = False  # Reset the window moved flag
         # Slide the window forward
@@ -156,7 +169,7 @@ def send_packets(client_socket, packets, window_size, timeout):
 # Function to handle the client-side operations for communication with the server
 def client(server_address):
     # Create a TCP socket and connect to the server
-    client_socket = socket(AF_INET, SOCK_STREAM)
+    client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     client_socket.connect(server_address)
 
     while True:
@@ -196,4 +209,3 @@ if __name__ == "__main__":
 
     # Start the client
     client(SERVER_ADDRESS)
-

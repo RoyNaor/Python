@@ -5,6 +5,7 @@ from socket import *
 HEADER_SIZE = 10
 MAX_MSG_SIZE = 8  # Default maximum message size
 
+
 # Function to extract the packet number and message content from a decoded message
 def extract(decoded_msg):
     new_msg = decoded_msg.split("-")  # Split the message into parts using '-'
@@ -46,6 +47,7 @@ def handle_file_request(connection_socket, file_path):
 def handle_packet_reception(connection_socket, max_msg_size):
     packets_received = []  # Stores the received packets
     next_expected_packet = 0  # Tracks the next expected packet number
+    count = 0  # debug
 
     print("New Message:")
     while True:

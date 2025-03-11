@@ -1,0 +1,59 @@
+No.,Time,Source,Destination,Protocol,Length,Info,TTL,Flags,DSCP,LEN
+1,0,192.168.26.128,192.168.26.2,DNS,79,Standard query 0xb05f HTTPS ynet-pic1.yit.co.il,64,0x0,0x00,65
+2,0.000209283,192.168.26.128,192.168.26.2,DNS,79,Standard query 0x7744 A ynet-pic1.yit.co.il,64,0x0,0x00,65
+3,0.000373846,192.168.26.128,192.168.26.2,DNS,79,Standard query 0xdf6a AAAA ynet-pic1.yit.co.il,64,0x0,0x00,65
+4,0.001617929,192.168.26.128,192.168.26.2,DNS,82,Standard query 0xa81c HTTPS totalmedia2.ynet.co.il,64,0x0,0x00,68
+5,0.001935952,192.168.26.128,192.168.26.2,DNS,82,Standard query 0xb4c9 A totalmedia2.ynet.co.il,64,0x0,0x00,68
+6,0.00200839,192.168.26.128,192.168.26.2,DNS,82,Standard query 0x638f AAAA totalmedia2.ynet.co.il,64,0x0,0x00,68
+7,0.00304682,192.168.26.128,192.168.26.2,DNS,78,Standard query 0x6114 A images1.ynet.co.il,64,0x0,0x00,64
+8,0.003134376,192.168.26.128,192.168.26.2,DNS,78,Standard query 0x9b10 AAAA images1.ynet.co.il,64,0x0,0x00,64
+9,0.003609303,192.168.26.128,192.168.26.2,DNS,78,Standard query 0xcba7 HTTPS images1.ynet.co.il,64,0x0,0x00,64
+10,0.005649159,192.168.26.2,192.168.26.128,DNS,201,Standard query response 0xb05f HTTPS ynet-pic1.yit.co.il CNAME ynet-pic1.yit.co.il.cdn.cloudflare.net HTTPS,128,0x0,0x00,187
+11,0.005649277,192.168.26.2,192.168.26.128,DNS,163,Standard query response 0x7744 A ynet-pic1.yit.co.il CNAME ynet-pic1.yit.co.il.cdn.cloudflare.net A 104.18.7.158 A 104.18.6.158,128,0x0,0x00,149
+12,0.005649309,192.168.26.2,192.168.26.128,DNS,187,Standard query response 0xdf6a AAAA ynet-pic1.yit.co.il CNAME ynet-pic1.yit.co.il.cdn.cloudflare.net AAAA 2606:4700::6812:69e AAAA 2606:4700::6812:79e,128,0x0,0x00,173
+13,0.007210237,192.168.26.2,192.168.26.128,DNS,245,Standard query response 0xa81c HTTPS totalmedia2.ynet.co.il CNAME totalmedia2.ynet.co.il-v1.edgekey.net CNAME e12476.b.akamaiedge.net SOA n0b.akamaiedge.net,128,0x0,0x00,231
+14,0.008969659,192.168.26.2,192.168.26.128,DNS,186,Standard query response 0xb4c9 A totalmedia2.ynet.co.il CNAME totalmedia2.ynet.co.il-v1.edgekey.net CNAME e12476.b.akamaiedge.net A 212.55.190.45,128,0x0,0x00,172
+15,0.008969688,192.168.26.2,192.168.26.128,DNS,245,Standard query response 0x638f AAAA totalmedia2.ynet.co.il CNAME totalmedia2.ynet.co.il-v1.edgekey.net CNAME e12476.b.akamaiedge.net SOA n0b.akamaiedge.net,128,0x0,0x00,231
+16,0.010529167,192.168.26.2,192.168.26.128,DNS,175,Standard query response 0x6114 A images1.ynet.co.il CNAME images1.ynet.co.il.edgekey.net CNAME e12476.b.akamaiedge.net A 212.55.190.45,128,0x0,0x00,161
+17,0.010529353,192.168.26.2,192.168.26.128,DNS,234,Standard query response 0xcba7 HTTPS images1.ynet.co.il CNAME images1.ynet.co.il.edgekey.net CNAME e12476.b.akamaiedge.net SOA n0b.akamaiedge.net,128,0x0,0x00,220
+18,0.010529465,192.168.26.2,192.168.26.128,DNS,234,Standard query response 0x9b10 AAAA images1.ynet.co.il CNAME images1.ynet.co.il.edgekey.net CNAME e12476.b.akamaiedge.net SOA n0b.akamaiedge.net,128,0x0,0x00,220
+19,0.022568431,192.168.26.128,192.168.26.2,DNS,74,Standard query 0xea28 A www.ynet.co.il,64,0x0,0x00,60
+20,0.022636906,192.168.26.128,192.168.26.2,DNS,74,Standard query 0xddba AAAA www.ynet.co.il,64,0x0,0x00,60
+21,0.022798803,192.168.26.128,192.168.26.2,DNS,74,Standard query 0xbd27 HTTPS www.ynet.co.il,64,0x0,0x00,60
+22,0.029755226,192.168.26.2,192.168.26.128,DNS,173,Standard query response 0xea28 A www.ynet.co.il CNAME www.ynet.co.il-v1.edgekey.net CNAME e12476.dscb.akamaiedge.net A 212.55.190.45,128,0x0,0x00,159
+23,0.029811304,192.168.26.2,192.168.26.128,DNS,297,Standard query response 0xddba AAAA www.ynet.co.il CNAME www.ynet.co.il-v1.edgekey.net CNAME e12476.dscb.akamaiedge.net AAAA 2a00:a040:0:180::30bc AAAA 2a00:a040:0:184::30bc AAAA 2a00:a040:0:181::30bc AAAA 2a00:a040:0:19d::30bc AAAA 2a00:a040:0:196::30bc,128,0x0,0x00,283
+24,0.029811375,192.168.26.2,192.168.26.128,DNS,235,Standard query response 0xbd27 HTTPS www.ynet.co.il CNAME www.ynet.co.il-v1.edgekey.net CNAME e12476.dscb.akamaiedge.net SOA n0dscb.akamaiedge.net,128,0x0,0x00,221
+25,0.844376471,192.168.26.128,192.168.26.2,DNS,72,Standard query 0xd673 A z.ynet.co.il,64,0x0,0x00,58
+26,0.845258028,192.168.26.128,192.168.26.2,DNS,72,Standard query 0x4771 AAAA z.ynet.co.il,64,0x0,0x00,58
+27,0.845909266,192.168.26.128,192.168.26.2,DNS,72,Standard query 0xec5c HTTPS z.ynet.co.il,64,0x0,0x00,58
+28,0.851430142,192.168.26.2,192.168.26.128,DNS,222,Standard query response 0xec5c HTTPS z.ynet.co.il CNAME z.ynet.co.il.edgekey.net CNAME e12476.b.akamaiedge.net SOA n0b.akamaiedge.net,128,0x0,0x00,208
+29,0.851430326,192.168.26.2,192.168.26.128,DNS,163,Standard query response 0xd673 A z.ynet.co.il CNAME z.ynet.co.il.edgekey.net CNAME e12476.b.akamaiedge.net A 212.55.190.45,128,0x0,0x00,149
+30,0.851485496,192.168.26.2,192.168.26.128,DNS,222,Standard query response 0x4771 AAAA z.ynet.co.il CNAME z.ynet.co.il.edgekey.net CNAME e12476.b.akamaiedge.net SOA n0b.akamaiedge.net,128,0x0,0x00,208
+31,1.298498748,192.168.26.128,192.168.26.2,DNS,72,Standard query 0x547f HTTPS a.ynet.co.il,64,0x0,0x00,58
+32,1.298685527,192.168.26.128,192.168.26.2,DNS,72,Standard query 0xedc5 A a.ynet.co.il,64,0x0,0x00,58
+33,1.298781646,192.168.26.128,192.168.26.2,DNS,72,Standard query 0xc411 AAAA a.ynet.co.il,64,0x0,0x00,58
+34,1.303838289,192.168.26.2,192.168.26.128,DNS,222,Standard query response 0x547f HTTPS a.ynet.co.il CNAME a.ynet.co.il.edgekey.net CNAME e12476.b.akamaiedge.net SOA n0b.akamaiedge.net,128,0x0,0x00,208
+35,1.30383862,192.168.26.2,192.168.26.128,DNS,163,Standard query response 0xedc5 A a.ynet.co.il CNAME a.ynet.co.il.edgekey.net CNAME e12476.b.akamaiedge.net A 212.55.190.45,128,0x0,0x00,149
+36,1.303838641,192.168.26.2,192.168.26.128,DNS,222,Standard query response 0xc411 AAAA a.ynet.co.il CNAME a.ynet.co.il.edgekey.net CNAME e12476.b.akamaiedge.net SOA n0b.akamaiedge.net,128,0x0,0x00,208
+37,3.415585624,192.168.26.128,192.168.26.2,DNS,76,Standard query 0xd6b2 A pauth.ynet.co.il,64,0x0,0x00,62
+38,3.415851884,192.168.26.128,192.168.26.2,DNS,76,Standard query 0x1840 AAAA pauth.ynet.co.il,64,0x0,0x00,62
+39,3.415944836,192.168.26.128,192.168.26.2,DNS,76,Standard query 0xeb45 HTTPS pauth.ynet.co.il,64,0x0,0x00,62
+40,3.424451661,192.168.26.2,192.168.26.128,DNS,193,Standard query response 0xd6b2 A pauth.ynet.co.il CNAME pauth-ynet.tinypass.com A 104.18.160.126 A 104.18.144.126 A 104.18.223.248 A 104.18.176.126 A 104.18.239.248,128,0x0,0x00,179
+41,3.424452359,192.168.26.2,192.168.26.128,DNS,253,Standard query response 0x1840 AAAA pauth.ynet.co.il CNAME pauth-ynet.tinypass.com AAAA 2606:4700::6812:907e AAAA 2606:4700::6812:a07e AAAA 2606:4700::6812:dff8 AAAA 2606:4700::6812:eff8 AAAA 2606:4700::6812:b07e,128,0x0,0x00,239
+42,3.424452389,192.168.26.2,192.168.26.128,DNS,246,Standard query response 0xeb45 HTTPS pauth.ynet.co.il CNAME pauth-ynet.tinypass.com HTTPS,128,0x0,0x00,232
+43,9.689712894,192.168.26.128,192.168.26.2,DNS,78,Standard query 0xffce AAAA vod-hls.ynethd.com,64,0x0,0x00,64
+44,9.68987665,192.168.26.128,192.168.26.2,DNS,78,Standard query 0xd7c9 HTTPS vod-hls.ynethd.com,64,0x0,0x00,64
+45,9.689927185,192.168.26.128,192.168.26.2,DNS,78,Standard query 0x2650 A vod-hls.ynethd.com,64,0x0,0x00,64
+46,9.695800724,192.168.26.2,192.168.26.128,DNS,194,Standard query response 0xffce AAAA vod-hls.ynethd.com CNAME ynetvod.cdnwiz.net SOA ns-948.awsdns-54.net,128,0x0,0x00,180
+47,9.695800987,192.168.26.2,192.168.26.128,DNS,194,Standard query response 0xd7c9 HTTPS vod-hls.ynethd.com CNAME ynetvod.cdnwiz.net SOA ns-948.awsdns-54.net,128,0x0,0x00,180
+48,9.69580101,192.168.26.2,192.168.26.128,DNS,126,Standard query response 0x2650 A vod-hls.ynethd.com CNAME ynetvod.cdnwiz.net A 116.202.148.22,128,0x0,0x00,112
+49,9.696109706,192.168.26.128,192.168.26.2,DNS,78,Standard query 0x35c8 AAAA ynetvod.cdnwiz.net,64,0x0,0x00,64
+50,9.696438164,192.168.26.128,192.168.26.2,DNS,78,Standard query 0x27d1 HTTPS ynetvod.cdnwiz.net,64,0x0,0x00,64
+51,9.702466611,192.168.26.2,192.168.26.128,DNS,162,Standard query response 0x27d1 HTTPS ynetvod.cdnwiz.net SOA ns-948.awsdns-54.net,128,0x0,0x00,148
+52,9.702466868,192.168.26.2,192.168.26.128,DNS,162,Standard query response 0x35c8 AAAA ynetvod.cdnwiz.net SOA ns-948.awsdns-54.net,128,0x0,0x00,148
+53,9.756691462,192.168.26.128,192.168.26.2,DNS,84,Standard query 0x34be HTTPS mediadownload.ynet.co.il,64,0x0,0x00,70
+54,9.756865585,192.168.26.128,192.168.26.2,DNS,84,Standard query 0xfda3 A mediadownload.ynet.co.il,64,0x0,0x00,70
+55,9.756948474,192.168.26.128,192.168.26.2,DNS,84,Standard query 0xe3dc AAAA mediadownload.ynet.co.il,64,0x0,0x00,70
+56,9.823997628,192.168.26.2,192.168.26.128,DNS,187,Standard query response 0xfda3 A mediadownload.ynet.co.il CNAME mediadownload.ynet.co.il.edgekey.net CNAME e12476.b.akamaiedge.net A 212.55.190.45,128,0x0,0x00,173
+57,9.826897545,192.168.26.2,192.168.26.128,DNS,246,Standard query response 0xe3dc AAAA mediadownload.ynet.co.il CNAME mediadownload.ynet.co.il.edgekey.net CNAME e12476.b.akamaiedge.net SOA n0b.akamaiedge.net,128,0x0,0x00,232
+58,9.8268977,192.168.26.2,192.168.26.128,DNS,246,Standard query response 0x34be HTTPS mediadownload.ynet.co.il CNAME mediadownload.ynet.co.il.edgekey.net CNAME e12476.b.akamaiedge.net SOA n0b.akamaiedge.net,128,0x0,0x00,232

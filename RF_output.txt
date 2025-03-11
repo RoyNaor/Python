@@ -1,0 +1,62 @@
+Merged dataset saved as merged_cleaned_data.csv
+First 5 rows of merged dataset:
+    No.      Time  ... Dst_Port              Flow_ID
+0    1  0.000000  ...  57621.0 -8447988505459525564
+1    2  0.394600  ...      NaN   -54169990186567664
+2    3  0.464303  ...      NaN  7107125925092785344
+3    4  0.464632  ...    443.0 -8624128016907281577
+4    5  0.464815  ...    443.0 -8885248888386336385
+
+[5 rows x 12 columns]
+
+Columns in merged dataset: Index(['No.', 'Time', 'Source', 'Destination', 'Protocol', 'Length', 'Info',
+       'App', 'Time_Diff', 'Src_Port', 'Dst_Port', 'Flow_ID'],
+      dtype='object')
+Scenario 1 Accuracy: 91.5
+Scenario 2 Accuracy: 87.6
+
+Classification Report for Scenario 1:
+               precision    recall  f1-score   support
+
+     Firefox       0.92      0.92      0.92       216
+      Google       0.78      0.95      0.86       190
+     Spotify       0.95      0.92      0.93       192
+     Youtube       0.97      0.86      0.91       210
+        Zoom       0.99      0.94      0.97       192
+
+    accuracy                           0.92      1000
+   macro avg       0.92      0.92      0.92      1000
+weighted avg       0.92      0.92      0.92      1000
+
+
+Classification Report for Scenario 2:
+               precision    recall  f1-score   support
+
+     Firefox       0.78      0.88      0.83       216
+      Google       0.77      0.85      0.81       190
+     Spotify       0.91      0.88      0.89       192
+     Youtube       0.97      0.86      0.91       210
+        Zoom       1.00      0.92      0.96       192
+
+    accuracy                           0.88      1000
+   macro avg       0.89      0.88      0.88      1000
+weighted avg       0.89      0.88      0.88      1000
+
+
+Actual vs Predicted Table for Scenario 1:
+
+Application Actual Predicted
+    Firefox    22%       22%
+     Google    19%       23%
+    Spotify    19%       18%
+    Youtube    21%       19%
+       Zoom    19%       18%
+
+Actual vs Predicted Table for Scenario 2:
+
+Application Actual Predicted
+    Firefox    22%       25%
+     Google    19%       21%
+    Spotify    19%       18%
+    Youtube    21%       19%
+       Zoom    19%       18%

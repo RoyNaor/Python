@@ -86,17 +86,6 @@ Total bytes transmitted per app.
 
 ---
 
-## 📷 Output Artifacts
-
-- `protocol_distribution_by_app.png`
-- `packet_size_distribution.png`
-- `flow_size_by_app.png`
-- `flow_volume_by_app.png`
-- `Actual_vs_Predicted_Scenario_1.png`
-- `Actual_vs_Predicted_Scenario_2.png`
-
----
-
 ## 🏁 How to Run
 
 ```bash

@@ -100,8 +100,7 @@ Total bytes transmitted per app.
 ## 🏁 How to Run
 
 ```bash
-pip install -r requirements.txt  # or manually install pandas, numpy, matplotlib, scikit-learn
-python main_analysis.py          # for visualizations
-python classifier.py             # for training/testing ML model
+pip install pandas, numpy, matplotlib, scikit-learn
+python main.py          
 
 
